@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cipher_Mate Tool</title>
+    <style>
+         /* Default (Dark Mode) */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #282c34;
+    color: #ffffff;
+    display: flex;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Light Mode */
+body.light-mode {
+    background-color: #f0f0f0;
+    color: #000000;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #333;
+    padding: 20px;
+}
+
+/* Light mode for sidebar */
+body.light-mode .sidebar {
+    background-color: #e0e0e0;
+}
+
+textarea, input {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+/* Light mode for inputs */
+body.light-mode textarea, body.light-mode input {
+    background: #ffffff;
+    color: #000000;
+}
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #282c34;
+            color: #ffffff;
+            display: flex;
+            min-height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #333;
+            padding: 20px;
+        }
+        .sidebar button {
+            width: 100%;
+            padding: 10px;
+            background-color: #61dafb;
+            border: none;
+            border-radius: 5px;
+            color: #000;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .sidebar button:hover {
+            background-color: #21a1f1;
+        }
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .cipher-section {
+            display: none;
+            width: 80%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        textarea, input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px 0;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h1>Cipher_Mate</h1>
+        <button onclick="toggleMode()">Dark/Light Mode</button>        
+        <button onclick="showSection('caesar')">Caesar Cipher</button>
+        <button onclick="showSection('vigenere')">Vigenère Cipher</button>
+        <button onclick="showSection('rsa')">RSA Cipher</button>
+        <button onclick="showSection('affine')">Affine Cipher</button>
+        <button onclick="showSection('aes')">AES Cipher</button>
+    </div>
+
+    <div class="content">
+        <!-- Caesar Cipher Section -->
+        <div class="cipher-section" id="caesar">
+            <h2>Caesar Cipher Tool</h2>
+            <textarea id="caesarPlaintext" rows="4" placeholder="Enter your plaintext here..."></textarea>
+            <input type="number" id="caesarShift" placeholder="Enter shift value (1-25)" min="1" max="25">
+            <button onclick="encryptCaesar()">Encrypt</button>
+            <div class="output" id="caesarEncryptedText">Encrypted text will appear here</div>
+            <button onclick="decryptCaesar()">Decrypt</button>
+            <div class="output" id="caesarDecryptedText">Decrypted text will appear here</div>
+            <button onclick="resetCaesar()">Reset</button>
+
+        </div>
+
+        <!-- Vigenère Cipher Section -->
+        <div class="cipher-section" id="vigenere">
+            <h2>Vigenère Cipher Tool</h2>
+            <textarea id="vigenerePlaintext" rows="4" placeholder="Enter your plaintext here..."></textarea>
+            <input type="text" id="vigenereKeyword" placeholder="Enter keyword here...">
+            <button onclick="encryptVigenere()">Encrypt</button>
+            <div class="output" id="vigenereEncryptedText">Encrypted text will appear here</div>
+            <button onclick="decryptVigenere()">Decrypt</button>
+            <div class="output" id="vigenereDecryptedText">Decrypted text will appear here</div>
+            <button onclick="resetVigenere()">Reset</button>
+
+        </div>
+
+        <!-- RSA Cipher Section -->
+        <div class="cipher-section" id="rsa">
+            <h2>RSA Cipher Tool</h2>
+            <button onclick="generateKeys()">Generate RSA Keys</button>
+            <div class="output" id="rsaKeysOutput">Keys will be displayed here</div>
+            <textarea id="rsaPlaintext" rows="4" placeholder="Enter your plaintext here..."></textarea>
+            <input type="text" id="rsaPublicKey" placeholder="Enter public key (e.g. 65537)">
+            <button onclick="encryptRSA()">Encrypt</button>
+            <div class="output" id="rsaEncryptedText">Encrypted text will appear here</div>
+            <input type="text" id="rsaPrivateKey" placeholder="Enter private key">
+            <button onclick="decryptRSA()">Decrypt</button>
+            <div class="output" id="rsaDecryptedText">Decrypted text will appear here</div>
+            <button onclick="resetRSA()">Reset</button>
+        </div>
+
+        <!-- Affine Cipher Section -->
+        <div class="cipher-section" id="affine">
+            <h2>AFFINE Cipher Tool</h2>
+            <textarea id="affinePlaintext" rows="4" placeholder="Enter your plaintext here..."></textarea>
+            <input type="number" id="affineA" placeholder="Enter 'a' (1-25 coprime to 26)" min="1" max="25">
+            <input type="number" id="affineB" placeholder="Enter 'b' (0-25)" min="0" max="25">
+            <button onclick="encryptAffine()">Encrypt</button>
+            <div class="output" id="affineEncryptedText">Encrypted text will appear here</div>
+            <button onclick="decryptAffine()">Decrypt</button>
+            <div class="output" id="affineDecryptedText">Decrypted text will appear here</div>
+            <button onclick="resetAffine()">Reset</button>
+
+        </div>
+
+        <!-- AES Cipher Section -->
+        <div class="cipher-section" id="aes">
+            <h2>AES Cipher Tool</h2>
+            <textarea id="aesPlaintext" rows="4" placeholder="Enter your plaintext here..."></textarea>
+            <input type="text" id="aesKey" placeholder="Enter 16, 24, or 32 character key...">
+            <button onclick="encryptAES()">Encrypt</button>
+            <div class="output" id="aesEncryptedText">Encrypted text will appear here</div>
+            <button onclick="decryptAES()">Decrypt</button>
+            <div class="output" id="aesDecryptedText">Decrypted text will appear here</div>
+            <button onclick="resetAES()">Reset</button>            
+        </div>
+    </div>
+
+    <script>
+    function toggleMode() {
+    document.body.classList.toggle('light-mode');
+
+    // Save theme preference in local storage
+    const isLightMode = document.body.classList.contains('light-mode');
+    localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+}
+
+// Apply saved theme on page load
+window.onload = function() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+    }
+};
+        // Show the first section by default
+        showSection('caesar');
+
+        function showSection(section) {
+            const sections = document.querySelectorAll('.cipher-section');
+            sections.forEach(s => s.style.display = 'none');
+            document.getElementById(section).style.display = 'block';
+        }
+
+        // Caesar Cipher Functions
+        function encryptCaesar() {
+            const plaintext = document.getElementById('caesarPlaintext').value;
+            const shift = parseInt(document.getElementById('caesarShift').value);
+            let encrypted = '';
+
+            for (let char of plaintext) {
+                if (char.match(/[a-z]/i)) {
+                    const code = char.charCodeAt(0);
+                    const base = code < 91 ? 65 : 97; // Uppercase or lowercase
+                    encrypted += String.fromCharCode((code - base + shift) % 26 + base);
+                } else {
+                    encrypted += char; // Non-alphabetic characters remain the same
+                }
+            }
+
+            document.getElementById('caesarEncryptedText').innerText = `Encrypted: ${encrypted}`;
+        }
+
+        function decryptCaesar() {
+            const encryptedText = document.getElementById('caesarEncryptedText').innerText.replace('Encrypted: ', '');
+            const shift = parseInt(document.getElementById('caesarShift').value);
+            let decrypted = '';
+
+            for (let char of encryptedText) {
+                if (char.match(/[a-z]/i)) {
+                    const code = char.charCodeAt(0);
+                    const base = code < 91 ? 65 : 97; // Uppercase or lowercase
+                    decrypted += String.fromCharCode((code - base - shift + 26) % 26 + base);
+                } else {
+                    decrypted += char; // Non-alphabetic characters remain the same
+                }
+            }
+
+            document.getElementById('caesarDecryptedText').innerText = `Decrypted: ${decrypted}`;
+        }
+        // Reset function for Caesar Cipher
+function resetCaesar() {
+    document.getElementById('caesarPlaintext').value = '';
+    document.getElementById('caesarShift').value = '';
+    document.getElementById('caesarEncryptedText').innerText = 'Encrypted text will appear here';
+    document.getElementById('caesarDecryptedText').innerText = 'Decrypted text will appear here';
+}
+
+        // Vigenère Cipher Functions
+        function encryptVigenere() {
+            const plaintext = document.getElementById('vigenerePlaintext').value;
+            const keyword = document.getElementById('vigenereKeyword').value;
+            let encrypted = '';
+            let keywordIndex = 0;
+
+            for (let char of plaintext) {
+                if (char.match(/[a-z]/i)) {
+                    const code = char.charCodeAt(0);
+                    const base = code < 91 ? 65 : 97; // Uppercase or lowercase
+                    const shift = keyword[keywordIndex % keyword.length].toLowerCase().charCodeAt(0) - 97;
+                    encrypted += String.fromCharCode((code - base + shift) % 26 + base);
+                    keywordIndex++;
+                } else {
+                    encrypted += char; // Non-alphabetic characters remain the same
+                }
+            }
+
+            document.getElementById('vigenereEncryptedText').innerText = `Encrypted: ${encrypted}`;
+        }
+
+        function decryptVigenere() {
+            const encryptedText = document.getElementById('vigenereEncryptedText').innerText.replace('Encrypted: ', '');
+            const keyword = document.getElementById('vigenereKeyword').value;
+            let decrypted = '';
+            let keywordIndex = 0;
+
+            for (let char of encryptedText) {
+                if (char.match(/[a-z]/i)) {
+                    const code = char.charCodeAt(0);
+                    const base = code < 91 ? 65 : 97; // Uppercase or lowercase
+                    const shift = keyword[keywordIndex % keyword.length].toLowerCase().charCodeAt(0) - 97;
+                    decrypted += String.fromCharCode((code - base - shift + 26) % 26 + base);
+                    keywordIndex++;
+                } else {
+                    decrypted += char; // Non-alphabetic characters remain the same
+                }
+            }
+
+            document.getElementById('vigenereDecryptedText').innerText = `Decrypted: ${decrypted}`;
+        }// Reset function for Vigenère Cipher
+function resetVigenere() {
+    document.getElementById('vigenerePlaintext').value = '';
+    document.getElementById('vigenereKeyword').value = '';
+    document.getElementById('vigenereEncryptedText').innerText = 'Encrypted text will appear here';
+    document.getElementById('vigenereDecryptedText').innerText = 'Decrypted text will appear here';
+}
+
+        // RSA Cipher Functions
+        function generateKeys() {
+            // Sample keys for demonstration; replace with actual RSA key generation
+            const publicKey = '65537'; // Example public key
+            const privateKey = '123456789'; // Example private key
+            document.getElementById('rsaKeysOutput').innerText = `Public Key: ${publicKey}, Private Key: ${privateKey}`;
+        }
+
+        function encryptRSA() {
+            const plaintext = document.getElementById('rsaPlaintext').value;
+            const publicKey = parseInt(document.getElementById('rsaPublicKey').value);
+            // Placeholder encryption logic
+            const encrypted = btoa(plaintext); // Just a base64 encoding for demonstration
+            document.getElementById('rsaEncryptedText').innerText = `Encrypted: ${encrypted}`;
+        }
+
+        function decryptRSA() {
+            const encryptedText = document.getElementById('rsaEncryptedText').innerText.replace('Encrypted: ', '');
+            const privateKey = document.getElementById('rsaPrivateKey').value;
+            // Placeholder decryption logic
+            const decrypted = atob(encryptedText); // Just a base64 decoding for demonstration
+            document.getElementById('rsaDecryptedText').innerText = `Decrypted: ${decrypted}`;
+        }
+        // Reset function for RSA Cipher
+function resetRSA() {
+    document.getElementById('rsaPlaintext').value = '';
+    document.getElementById('rsaPublicKey').value = '';
+    document.getElementById('rsaPrivateKey').value = '';
+    document.getElementById('rsaKeysOutput').innerText = 'Keys will be displayed here';
+    document.getElementById('rsaEncryptedText').innerText = 'Encrypted text will appear here';
+    document.getElementById('rsaDecryptedText').innerText = 'Decrypted text will appear here';
+}
+
+        // Affine Cipher Functions
+        function encryptAffine() {
+            const plaintext = document.getElementById('affinePlaintext').value;
+            const a = parseInt(document.getElementById('affineA').value);
+            const b = parseInt(document.getElementById('affineB').value);
+            let encrypted = '';
+
+            for (let char of plaintext) {
+                if (char.match(/[a-z]/i)) {
+                    const code = char.charCodeAt(0);
+                    const base = code < 91 ? 65 : 97; // Uppercase or lowercase
+                    encrypted += String.fromCharCode(((a * (code - base) + b) % 26) + base);
+                } else {
+                    encrypted += char; // Non-alphabetic characters remain the same
+                }
+            }
+
+            document.getElementById('affineEncryptedText').innerText = `Encrypted: ${encrypted}`;
+        }
+
+        function decryptAffine() {
+            const encryptedText = document.getElementById('affineEncryptedText').innerText.replace('Encrypted: ', '');
+            const a = parseInt(document.getElementById('affineA').value);
+            const b = parseInt(document.getElementById('affineB').value);
+            let decrypted = '';
+
+            for (let char of encryptedText) {
+                if (char.match(/[a-z]/i)) {
+                    const code = char.charCodeAt(0);
+                    const base = code < 91 ? 65 : 97; // Uppercase or lowercase
+                    const aInverse = modInverse(a, 26);
+                    decrypted += String.fromCharCode(((aInverse * ((code - base) - b + 26)) % 26) + base);
+                } else {
+                    decrypted += char; // Non-alphabetic characters remain the same
+                }
+            }
+
+            document.getElementById('affineDecryptedText').innerText = `Decrypted: ${decrypted}`;
+        }
+
+        function modInverse(a, m) {
+            a = a % m;
+            for (let x = 1; x < m; x++) {
+                if ((a * x) % m === 1) {
+                    return x;
+                }
+            }
+            return 1; // Inverse not found
+        }
+// Reset function for Affine Cipher
+function resetAffine() {
+    document.getElementById('affinePlaintext').value = '';
+    document.getElementById('affineA').value = '';
+    document.getElementById('affineB').value = '';
+    document.getElementById('affineEncryptedText').innerText = 'Encrypted text will appear here';
+    document.getElementById('affineDecryptedText').innerText = 'Decrypted text will appear here';
+}
+        // AES Cipher Functions
+        function encryptAES() {
+            const plaintext = document.getElementById('aesPlaintext').value;
+            const key = document.getElementById('aesKey').value;
+
+            // Placeholder AES encryption logic
+            const encrypted = btoa(plaintext); // Just a base64 encoding for demonstration
+            document.getElementById('aesEncryptedText').innerText = `Encrypted: ${encrypted}`;
+        }
+
+        function decryptAES() {
+            const encryptedText = document.getElementById('aesEncryptedText').innerText.replace('Encrypted: ', '');
+            // Placeholder AES decryption logic
+            const decrypted = atob(encryptedText); // Just a base64 decoding for demonstration
+            document.getElementById('aesDecryptedText').innerText = `Decrypted: ${decrypted}`;
+        }
+        // Reset function for AES Cipher
+function resetAES() {
+    document.getElementById('aesPlaintext').value = '';
+    document.getElementById('aesKey').value = '';
+    document.getElementById('aesEncryptedText').innerText = 'Encrypted text will appear here';
+    document.getElementById('aesDecryptedText').innerText = 'Decrypted text will appear here';
+}
+    </script>
+</body>
+</html>

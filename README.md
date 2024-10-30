@@ -1,1 +1,1 @@
-# Cipher_Mate-Project
+The CipherMate Tool is designed to provide encryption and decryption functionalities using several classic and modern algorithms, including Caesar, Vigenère, RSA, Affine, and AES. The purpose of this tool is to help users understand and experiment with different ciphers in an easy-to-use web interface. # Cipher_Mate-Project
